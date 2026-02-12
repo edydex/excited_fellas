@@ -1,0 +1,310 @@
+/* === Reset & base === */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Patrick Hand", cursive;
+  background-color: #faf7f2;
+  color: #3b3530;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-x: hidden;
+}
+
+/* === Header === */
+header {
+  text-align: center;
+  padding: 1rem 1rem 0;
+}
+
+header h1 {
+  font-family: "Caveat", cursive;
+  font-weight: 600;
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  color: #3b3530;
+  letter-spacing: 0.02em;
+}
+
+.tagline {
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: #8a7f74;
+  margin-top: 0.2rem;
+}
+
+/* === Bear scene — the whole composition === */
+main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  padding: 0;
+}
+
+.bear-scene {
+  position: relative;
+  width: min(98vw, 960px);
+  aspect-ratio: 924 / 756;
+}
+
+.bear-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* === Album — two pages side by side over the book === */
+.album {
+  position: absolute;
+  top: 57.5%;
+  left: 24%;
+  width: 51%;
+  height: 30%;
+  display: flex;
+  gap: 0;
+}
+
+.album-page {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0;
+  padding: 3%;
+}
+
+/* Higher-lower | lower-higher across both pages */
+/* Left page: child 1 = high, child 2 = low, child 3 = high, child 4 = low */
+.album-page--left .polaroid:nth-child(1) {
+  transform: rotate(var(--tilt, 0deg)) translateY(-10%);
+}
+.album-page--left .polaroid:nth-child(2) {
+  transform: rotate(var(--tilt, 0deg)) translateY(6%) translateX(-10%);
+}
+.album-page--left .polaroid:nth-child(3) {
+  transform: rotate(var(--tilt, 0deg)) translateX(-20%) translateY(-12%);
+}
+.album-page--left .polaroid:nth-child(4) {
+  transform: rotate(var(--tilt, 0deg)) translateX(-19%) translateY(5%);
+}
+
+/* Right page: child 1 = low, child 2 = high, child 3 = low, child 4 = high */
+.album-page--right .polaroid:nth-child(1) {
+  transform: rotate(var(--tilt, 0deg)) translateY(6%) translateX(-20%);
+}
+.album-page--right .polaroid:nth-child(2) {
+  transform: rotate(var(--tilt, 0deg)) translateY(-24%) translateX(-25%);
+}
+.album-page--right .polaroid:nth-child(3) {
+  transform: rotate(var(--tilt, 0deg)) translateX(-29%) translateY(5%);
+}
+.album-page--right .polaroid:nth-child(4) {
+  transform: rotate(var(--tilt, 0deg)) translateX(-29%) translateY(-8%);
+}
+.polaroid {
+  background: #fffdf8;
+  border-radius: 3px;
+  box-shadow:
+    1px 2px 6px rgba(80, 60, 40, 0.13),
+    0 0 0 1px rgba(80, 60, 40, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 5% 5% 8%;
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) scale(1.08);
+  box-shadow:
+    2px 4px 14px rgba(80, 60, 40, 0.2),
+    0 0 0 1px rgba(80, 60, 40, 0.1);
+  z-index: 2;
+}
+
+/* The "photo" area inside the polaroid */
+.polaroid-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.polaroid-icon {
+  font-size: clamp(1rem, 3vw, 2rem);
+  line-height: 1;
+}
+
+.polaroid-icon-img {
+  width: 65%;
+  height: 65%;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+.polaroid-label {
+  margin-top: auto;
+  font-family: "Caveat", cursive;
+  font-size: clamp(0.6rem, 1.6vw, 1.05rem);
+  color: #6b6056;
+  text-align: center;
+  white-space: nowrap;
+  padding-top: 6%;
+}
+
+/* === Footer === */
+footer {
+  text-align: center;
+  padding: 0 1rem 1rem;
+  font-size: 0.9rem;
+  color: #a89e93;
+}
+
+/* === Version toggle (hidden until more projects are ready) === */
+.version-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0.3rem auto 0;
+}
+
+.version-label {
+  font-family: "Caveat", cursive;
+  font-size: clamp(0.85rem, 1.8vw, 1.1rem);
+  color: #8a7f74;
+  margin-right: 0.2rem;
+}
+
+.version-btn {
+  font-family: "Caveat", cursive;
+  font-size: clamp(0.8rem, 1.6vw, 1.05rem);
+  background: #efe9e0;
+  color: #6b6056;
+  border: 1.5px solid transparent;
+  border-radius: 6px;
+  padding: 0.15em 0.55em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  line-height: 1.3;
+}
+
+.version-btn:hover {
+  background: #e6ddd2;
+}
+
+.version-btn.active {
+  background: #3b3530;
+  color: #faf7f2;
+  border-color: #3b3530;
+}
+
+/* === Adaptive page grids based on data-count === */
+
+/* 4 items → 2×2 (default) */
+.album-page[data-count="4"] {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+/* 3 items → 2 top, 1 bottom centred */
+.album-page[data-count="3"] {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.album-page[data-count="3"] .polaroid:nth-child(3) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 55%;
+}
+
+/* 2 items → 1×2 column, bigger polaroids */
+.album-page[data-count="2"] {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.album-page[data-count="2"] .polaroid {
+  justify-self: center;
+  width: 70%;
+}
+
+/* 1 item → single big polaroid centred */
+.album-page[data-count="1"] {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  place-items: center;
+}
+.album-page[data-count="1"] .polaroid {
+  width: 75%;
+}
+
+/* Scale icons & labels when fewer items show */
+.album-page[data-count="1"] .polaroid-icon,
+.album-page[data-count="2"] .polaroid-icon {
+  font-size: clamp(1rem, 3vw, 2rem);
+}
+.album-page[data-count="1"] .polaroid-label,
+.album-page[data-count="2"] .polaroid-label {
+  font-size: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.album-page[data-count="3"] .polaroid-icon {
+  font-size: clamp(0.85rem, 2.4vw, 1.6rem);
+}
+.album-page[data-count="3"] .polaroid-label {
+  font-size: clamp(0.7rem, 1.8vw, 1.15rem);
+}
+
+/* Soften per-child nudges for lower counts (avoid clipping) */
+.album-page[data-count="1"] .polaroid,
+.album-page[data-count="2"] .polaroid,
+.album-page[data-count="3"] .polaroid:nth-child(1),
+.album-page[data-count="3"] .polaroid:nth-child(2) {
+  transform: rotate(var(--tilt, 0deg)) !important;
+}
+
+/* Nudge right-page single polaroid left */
+.album-page--right[data-count="1"] .polaroid {
+  transform: rotate(var(--tilt, 0deg)) translateX(-25px) !important;
+}
+
+/* === Responsive tweaks === */
+@media (max-width: 480px) {
+  .bear-scene {
+    width: 100vw;
+  }
+
+  .album {
+    gap: 3%;
+  }
+
+  .album-page {
+    gap: 4%;
+  }
+
+  .polaroid {
+    padding: 5% 5% 7%;
+  }
+
+  .polaroid-label {
+    font-size: 0.4rem;
+  }
+}

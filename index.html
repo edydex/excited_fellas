@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excited Fellas</title>
+  <link rel="icon" href="bear.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Patrick+Hand&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <h1>excited fellas</h1>
+    <p class="tagline">we do what we can because we must</p>
+  </header>
+
+  <main>
+    <div class="bear-scene">
+      <!-- The bear SVG -->
+      <object data="bear_zoom.svg" type="image/svg+xml" class="bear-svg" aria-label="A friendly bear holding a photo album"></object>
+
+      <!-- Version toggle -->
+      <div class="version-toggle">
+        <span class="version-label">projects:</span>
+        <button class="version-btn" data-v="2">2</button>
+        <button class="version-btn" data-v="3">3</button>
+        <button class="version-btn" data-v="4">4</button>
+        <button class="version-btn" data-v="5">5</button>
+        <button class="version-btn" data-v="6">6</button>
+        <button class="version-btn" data-v="7">7</button>
+        <button class="version-btn active" data-v="8">8</button>
+      </div>
+
+      <!--
+        Album versions — data-version controls how many polaroids show.
+        Layout per version (left / right):
+          2 → 1 / 1      5 → 3 / 2
+          3 → 2 / 1      6 → 3 / 3
+          4 → 2 / 2      7 → 4 / 3
+                          8 → 4 / 4
+      -->
+      <div class="album" data-version="8">
+
+        <!-- Left page -->
+        <div class="album-page album-page--left">
+          <a href="https://campgamesdb.com" target="_blank" class="polaroid" data-slot="1" style="--tilt: 4deg">
+            <div class="polaroid-img" style="background-color: #f4e8d1;">
+              <img class="polaroid-icon-img" src="assets/PagesDB.jpg" alt="PagesDB">
+            </div>
+            <span class="polaroid-label">PagesDB</span>
+          </a>
+          <a href="#" class="polaroid" data-slot="2" style="--tilt: 2deg">
+            <div class="polaroid-img" style="background-color: #d6eae1;">
+              <span class="polaroid-icon">🌿</span>
+            </div>
+            <span class="polaroid-label">green spaces</span>
+          </a>
+          <a href="#" class="polaroid" data-slot="3" style="--tilt: 3.5deg">
+            <div class="polaroid-img" style="background-color: #e1daf0;">
+              <span class="polaroid-icon">✏️</span>
+            </div>
+            <span class="polaroid-label">brand sketches</span>
+          </a>
+          <a href="#" class="polaroid" data-slot="4" style="--tilt: 1.5deg">
+            <div class="polaroid-img" style="background-color: #fde8d8;">
+              <span class="polaroid-icon">📷</span>
+            </div>
+            <span class="polaroid-label">photo stories</span>
+          </a>
+        </div>
+
+        <!-- Right page -->
+        <div class="album-page album-page--right">
+          <a href="https://heritage.faith" target="_blank" class="polaroid" data-slot="5" style="--tilt: -2.5deg">
+            <div class="polaroid-img" style="background-color: #dce9f5;">
+              <span class="polaroid-icon">📖</span>
+            </div>
+            <span class="polaroid-label">Heritage Study Bible</span>
+          </a>
+          <a href="#" class="polaroid" data-slot="6" style="--tilt: -4deg">
+            <div class="polaroid-img" style="background-color: #f5e6e0;">
+              <span class="polaroid-icon">🎨</span>
+            </div>
+            <span class="polaroid-label">illustrations</span>
+          </a>
+          <a href="#" class="polaroid" data-slot="7" style="--tilt: -1.5deg">
+            <div class="polaroid-img" style="background-color: #e8f0da;">
+              <span class="polaroid-icon">🎵</span>
+            </div>
+            <span class="polaroid-label">sound & music</span>
+          </a>
+          <a href="#" class="polaroid" data-slot="8" style="--tilt: -3deg">
+            <div class="polaroid-img" style="background-color: #f0e4d6;">
+              <span class="polaroid-icon">📐</span>
+            </div>
+            <span class="polaroid-label">tiny tools</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    /* ── Version toggle logic ── */
+    const album   = document.querySelector('.album');
+    const buttons = document.querySelectorAll('.version-btn');
+
+    // Which slots are visible per version  (left page = 1-4, right page = 5-8)
+    const versionSlots = {
+      2: [1, 5],
+      3: [1, 2, 5],
+      4: [1, 2, 5, 6],
+      5: [1, 2, 3, 5, 6],
+      6: [1, 2, 3, 5, 6, 7],
+      7: [1, 2, 3, 4, 5, 6, 7],
+      8: [1, 2, 3, 4, 5, 6, 7, 8],
+    };
+
+    // How many items on each page  →  decides grid layout class
+    const pageLayout = {
+      2: { left: 1, right: 1 },
+      3: { left: 2, right: 1 },
+      4: { left: 2, right: 2 },
+      5: { left: 3, right: 2 },
+      6: { left: 3, right: 3 },
+      7: { left: 4, right: 3 },
+      8: { left: 4, right: 4 },
+    };
+
+    function setVersion(v) {
+      album.setAttribute('data-version', v);
+
+      // Show / hide polaroids
+      const visible = versionSlots[v];
+      album.querySelectorAll('.polaroid').forEach(p => {
+        const slot = parseInt(p.dataset.slot);
+        p.style.display = visible.includes(slot) ? '' : 'none';
+      });
+
+      // Update page grid classes
+      const leftPage  = album.querySelector('.album-page--left');
+      const rightPage = album.querySelector('.album-page--right');
+      leftPage.dataset.count  = pageLayout[v].left;
+      rightPage.dataset.count = pageLayout[v].right;
+
+      // Update active button
+      buttons.forEach(b => b.classList.toggle('active', parseInt(b.dataset.v) === v));
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => setVersion(parseInt(btn.dataset.v)));
+    });
+
+    // Initialise to version 2 (or change default here)
+    setVersion(2);
+  </script>
+
+  <footer>
+    <p>made by excited fellas · 2026</p>
+  </footer>
+
+</body>
+</html>
